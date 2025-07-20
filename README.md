@@ -30,5 +30,8 @@ The tool can be integrated with task tracking systems like Jira, Trello, or Asan
 
 Ideal for project managers, team leads, and professionals in fast-paced environments, this tool improves information accessibility and helps users focus on what's important. By combining Python’s flexibility with the power of modern NLP, it offers an efficient solution to the growing challenge of information overload.
 
+*OUTPUT*:
+![Image](https://github.com/user-attachments/assets/5df84f65-8e1f-46f1-a708-0419f9d0bc11)
+
 
 
