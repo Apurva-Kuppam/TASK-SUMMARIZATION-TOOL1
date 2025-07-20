@@ -1,0 +1,56 @@
+# Task Summarizer using NLTK (Extractive approach)
+
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize, sent_tokenize
+
+# Download resources if not already installed
+nltk.download('punkt')
+nltk.download('stopwords')
+
+def summarize_text(text: str, threshold_ratio: float = 1.2) -> str:
+    """
+    Summarize the input text using simple frequency-based extractive summarization.
+    'threshold_ratio' (~1.2) determines how much higher a sentence score must be
+    compared to the average to be included in the summary.
+    """
+    # Tokenize words and sentences
+    stop_words = set(stopwords.words('english'))
+    words = word_tokenize(text)
+
+    # Build frequency table of non-stopwords
+    freq_table = {}
+    for word in words:
+        w = word.lower()
+        if w in stop_words or not w.isalnum():
+            continue
+        freq_table[w] = freq_table.get(w, 0) + 1
+
+    # Score each sentence based on word frequencies
+    sentences = sent_tokenize(text)
+    sentence_scores = {}
+    for sentence in sentences:
+        for w, freq in freq_table.items():
+            if w in sentence.lower():
+                sentence_scores[sentence] = sentence_scores.get(sentence, 0) + freq
+
+    # Compute average sentence score
+    avg_score = sum(sentence_scores.values()) / len(sentence_scores)
+
+    # Select sentences scoring above threshold_ratio × average
+    summary_sentences = [
+        sent for sent, score in sentence_scores.items()
+        if score > (threshold_ratio * avg_score)
+    ]
+
+    # Join the selected sentences in original order
+    summary = " ".join(summary_sentences)
+    return summary
+
+if __name__ == "__main__":
+    sample_text = """
+    Your long task description goes here. It can be multiple sentences, paragraphs, etc.
+    """
+    result = summarize_text(sample_text)
+    print("Summary:")
+    print(result)
